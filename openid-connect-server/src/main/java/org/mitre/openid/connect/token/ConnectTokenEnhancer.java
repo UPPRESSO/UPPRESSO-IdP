@@ -22,6 +22,9 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.UUID;
 
+import org.bouncycastle.asn1.sec.SECNamedCurves;
+import org.bouncycastle.asn1.x9.X9ECParameters;
+import org.bouncycastle.math.ec.ECPoint;
 import org.mitre.jwt.signer.service.JWTSigningAndValidationService;
 import org.mitre.oauth2.model.ClientDetailsEntity;
 import org.mitre.oauth2.model.OAuth2AccessTokenEntity;
@@ -31,6 +34,7 @@ import org.mitre.openid.connect.config.ConfigurationPropertiesBean;
 import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.openid.connect.service.OIDCTokenService;
 import org.mitre.openid.connect.service.UserInfoService;
+import org.mitre.openid.connect.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,8 +140,12 @@ public class ConnectTokenEnhancer implements TokenEnhancer {
 
 			if (userInfo != null) {
 
-				String uid = userInfo.getSub();
-				String sub = new BigInteger(clientId).modPow(new BigInteger(uid), P).toString();
+//				String uid = userInfo.getSub();
+				String uid = "8515918516694561415648484561456158645613484613348118648451684148645154815184151816156489486156184586413311848445151845121846654846123156486";
+				X9ECParameters ecp = SECNamedCurves.getByName("secp256k1");
+				ECPoint pointClientID = ecp.getCurve().decodePoint(Util.hexString2Bytes(clientId));
+				ECPoint pointPUID = pointClientID.multiply(new BigInteger(uid)).normalize();
+				String sub = Util.bytes2HexString(pointPUID.getEncoded(false));
 
 
 				JWT idToken = connectTokenService.createIdToken(client,
