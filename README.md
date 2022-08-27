@@ -1,13 +1,27 @@
-简单部署说明：
+#UPRESSO-IdP
 
-安装maven工具
+##Build
 
-将IdP/oauth目录下执行mvn -DskipTests -Dmaven.javadoc.skip=true package install
+Install maven tools or you can run the following commands within IntelliJ IDEA.
 
-在IdP目录下执行mvn -DskipTests -Dmaven.javadoc.skip=true clean install
+First go to `./spring-security-oauth` and run.
 
-在IdP\openid-connect-server-webapp目录下执行mvn jetty:run-war
+```shell
+mvn -DskipTests -Dmaven.javadoc.skip=true package install
+```
 
-可以尝试在intellij idea里操作maven命令
+Next go to `./` and run
 
-默认的配置为本地的8080端口
+```shell
+mvn -DskipTests -Dmaven.javadoc.skip=true clean install
+```
+
+##Quickstart
+
+go to `./openid-connect-server-webapp` and run
+
+```shell
+mvn jetty:run-war
+```
+
+then check `localhost:8080`
