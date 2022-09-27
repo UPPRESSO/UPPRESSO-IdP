@@ -138,10 +138,10 @@ public class TofuUserApprovalHandler implements UserApprovalHandler {
 		if (!prompts.contains(PROMPT_CONSENT)) {
 			// if the prompt parameter is set to "consent" then we can't use approved sites or whitelisted sites
 			// otherwise, we need to check them below
-			
-			
-			
-			
+
+			/**
+			 * modified by Guo Chengqian
+			 * **/
 			Set<String> scope = new HashSet();
 			scope.add("openid");
 			scope.add("email");

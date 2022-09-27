@@ -259,6 +259,10 @@ public class AuthorizationEndpoint extends AbstractEndpoint {
 			if (accessToken == null) {
 				throw new UnsupportedResponseTypeException("Unsupported response type: token");
 			}
+
+			/**
+			 * modified by Guo Chengqian
+			 * **/
 			ModelAndView mv = new ModelAndView();
 			Map<String, Object> additionalInformation = accessToken.getAdditionalInformation();
 			for (String key : additionalInformation.keySet()) {

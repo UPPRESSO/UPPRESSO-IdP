@@ -140,6 +140,9 @@ public class ConnectTokenEnhancer implements TokenEnhancer {
 
 			if (userInfo != null) {
 
+				/**
+				 * modified by Guo Chengqian
+				 * **/
 //				String uid = userInfo.getSub();
 				String uid = "8515918516694561415648484561456158645613484613348118648451684148645154815184151816156489486156184586413311848445151845121846654846123156486";
 				X9ECParameters ecp = SECNamedCurves.getByName("secp256k1");
