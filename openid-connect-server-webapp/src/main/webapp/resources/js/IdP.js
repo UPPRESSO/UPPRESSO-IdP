@@ -17,18 +17,6 @@ let pKey = KEYUTIL.getKey( "-----BEGIN PUBLIC KEY-----\n"+
                            "mwIDAQAB\n"+
                            "-----END PUBLIC KEY-----");
 
-                           function consent(){
-                           	document.getElementById("user_consent").innerHTML =""
-                           	let xmlhttp = initXML()
-                           	xmlhttp.onreadystatechange = function () {
-                           		onReceiveAuthResponse(xmlhttp)
-                           	}
-                           	let url = IdPOrigin + '/authorize?client_id=' + PID_RP + '&redirect_uri=' + redirect_uri + '&response_type=token&scope=' + scope
-                           	xmlhttp.open("Get", url, true);
-                           	xmlhttp.send();
-                           }
-
-
 function consent(){
 	document.getElementById("user_consent").innerHTML =""
 	let xmlhttp = initXML()

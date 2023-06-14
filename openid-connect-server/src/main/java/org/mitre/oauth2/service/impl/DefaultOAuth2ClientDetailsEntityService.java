@@ -340,6 +340,9 @@ public class DefaultOAuth2ClientDetailsEntityService implements ClientDetailsEnt
 		if (!Strings.isNullOrEmpty(clientId)) {
 			ClientDetailsEntity client = clientRepository.getClientByClientId(clientId);
 			if (client == null) {
+				/**
+				 * modified by Guo Chengqian
+				 * **/
 				client = new ClientDetailsEntity();
 				client.setClientId(clientId);
 				return client;
