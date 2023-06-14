@@ -1,0 +1,63 @@
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class OAuth2Client {
+    private String clientId;
+    private String clientSecret;
+    private String tokenEndpoint;
+
+    public OAuth2Client(String clientId, String clientSecret, String tokenEndpoint) {
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.tokenEndpoint = tokenEndpoint;
+    }
+
+    public String getAccessToken() throws IOException {
+        String encodedCredentials = Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes(StandardCharsets.UTF_8));
+        String requestBody = "grant_type=client_credentials";
+        byte[] requestBodyBytes = requestBody.getBytes(StandardCharsets.UTF_8);
+
+        URL url = new URL(tokenEndpoint);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setDoOutput(true);
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Authorization", "Basic " + encodedCredentials);
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        conn.setRequestProperty("Content-Length", Integer.toString(requestBodyBytes.length));
+        conn.getOutputStream().write(requestBodyBytes);
+
+        String response = readResponse(conn.getInputStream());
+        Map<String, Object> responseData = parseResponse(response);
+        return (String) responseData.get("access_token");
+    }
+
+    private String readResponse(InputStream inputStream) throws IOException {
+        try (Scanner scanner = new Scanner(inputStream, "UTF-8")) {
+            return scanner.useDelimiter("\\A").next();
+        }
+    }
+
+    private Map<String, Object> parseResponse(String response) throws UnsupportedEncodingException {
+        Map<String, Object> map = new HashMap<>();
+        String[] pairs = response.split("&");
+
+        for (String pair : pairs) {
+            int idx = pair.indexOf("=");
+            String key = URLDecoder.decode(pair.substring(0, idx), "UTF-8");
+            String value = URLDecoder.decode(pair.substring(idx + 1), "UTF-8");
+
+            map.put(key, value);
+        }
+
+        return map;
+    }
+}
